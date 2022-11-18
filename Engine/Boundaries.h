@@ -27,9 +27,9 @@ public:
 			const float extents = 0.99f * size;
 			const b2Vec2 vertices[] = {
 				{ -extents,-extents },
-				{  extents,-extents },
+				{ -extents, extents },
 				{  extents, extents },
-				{ -extents, extents }
+				{  extents,-extents }
 			};
 			b2ChainShape chain;
 			chain.CreateLoop( vertices,4 );
