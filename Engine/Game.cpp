@@ -27,6 +27,8 @@
 #include <functional>
 #include <iterator>
 
+PostStep Game::postSteper;
+
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
@@ -60,6 +62,12 @@ Game::Game( MainWindow& wnd )
 				std::stringstream msg;
 				msg << "Collision between " << tid0.name() << " and " << tid1.name() << std::endl;
 				OutputDebugStringA( msg.str().c_str() );
+
+				if (tid0 == tid1)
+				{
+					postSteper.DestroyBox(boxPtrs[0]);
+					postSteper.DestroyBox(boxPtrs[1]);
+				}
 			}
 		}
 	};
@@ -79,6 +87,7 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	world.Step( dt,8,3 );
+	postSteper.Evaluate(boxPtrs);
 }
 
 void Game::ComposeFrame()
