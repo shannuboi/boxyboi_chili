@@ -103,7 +103,9 @@ private:
 		}
 		else
 		{
-			return [](Collision& coll) {};
+			return [](Collision& coll) {
+				coll.first->SetColorTrait(coll.second->GetColorTrait().Clone());
+			};
 		}
 	}
 	void DeleteBox(Box* pbox)
