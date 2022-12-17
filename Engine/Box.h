@@ -91,6 +91,10 @@ public:
 	{
 		return *pColorTrait;
 	}
+	void SetColorTrait(std::unique_ptr<ColorTrait> newColorTrait)
+	{
+		pColorTrait = std::move(newColorTrait);
+	}
 private:
 	static void Init()
 	{
