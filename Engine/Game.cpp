@@ -27,7 +27,7 @@
 #include <functional>
 #include <iterator>
 
-PostStep Game::postSteper;
+static Game* GameObjPtr;
 
 Game::Game( MainWindow& wnd )
 	:
@@ -36,12 +36,16 @@ Game::Game( MainWindow& wnd )
 	world( { 0.0f,-0.5f } ),
 	pepe( gfx )
 {
+	GameObjPtr = this;
+
 	pepe.effect.vs.cam.SetPos( { 0.0,0.0f } );
 	pepe.effect.vs.cam.SetZoom( 1.0f / boundarySize );
 
 	std::generate_n( std::back_inserter( boxPtrs ),nBoxes,[this]() {
 		return Box::Spawn( boxSize,bounds,world,rng );
 	} );
+
+	postSteper.SetUp();
 
 	class Listener : public b2ContactListener
 	{
@@ -63,11 +67,7 @@ Game::Game( MainWindow& wnd )
 				msg << "Collision between " << tid0.name() << " and " << tid1.name() << std::endl;
 				OutputDebugStringA( msg.str().c_str() );
 
-				if (tid0 == tid1)
-				{
-					postSteper.DestroyBox(boxPtrs[0]);
-					postSteper.DestroyBox(boxPtrs[1]);
-				}
+				GameObjPtr->postSteper.AddCollision(boxPtrs[0], boxPtrs[1]);
 			}
 		}
 	};
@@ -87,7 +87,7 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	world.Step( dt,8,3 );
-	postSteper.Evaluate(boxPtrs);
+	postSteper.Evaluate();
 }
 
 void Game::ComposeFrame()
