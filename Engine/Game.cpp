@@ -34,7 +34,8 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	world( { 0.0f,-0.5f } ),
-	pepe( gfx )
+	pepe( gfx ),
+	postSteper(world, boxPtrs)
 {
 	GameObjPtr = this;
 

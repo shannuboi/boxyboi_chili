@@ -59,6 +59,6 @@ private:
 	b2World world;
 	Boundaries bounds = Boundaries( world,boundarySize );
 	std::vector<std::unique_ptr<Box>> boxPtrs;
-	PostStep postSteper = PostStep(boxPtrs);
+	PostStep postSteper;
 	/********************************/
 };
